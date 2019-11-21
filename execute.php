@@ -26,13 +26,13 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 {
 	$response = "Ciao $firstname, benvenuto!";
 }
-elseif($text=="domanda 1")
+elseif(strpos($text, "/inserisci") === 0)
 {
-	$response = "risposta 1";
+	$response = "inserisco, dimmi il nome e cognome";
 }
-elseif($text=="domanda 2")
+elseif(strpos($text, "/elenco") === 0)
 {
-	$response = "risposta 2";
+	$response = "ti dò l'elenco dei da richiamare del giorno".$text;
 }
 else
 {
