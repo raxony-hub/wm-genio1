@@ -32,11 +32,11 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 		$response."impossibile stabilire una connessione ". mysql_error();
 	}
 	
-	$DBsel = mysql_select_db("bfFvkAb7fr");
-	if(!$DBsel)
-	{
-		$response."impossibile selezionare la connessione " . mysql_error();
-	}
+	//$DBsel = mysql_select_db("bfFvkAb7fr");
+	//if(!$DBsel)
+	//{
+	//	$response."impossibile selezionare la connessione " . mysql_error();
+	//}
 	
 }
 elseif(strpos($text, "/inserisci") === 0)
