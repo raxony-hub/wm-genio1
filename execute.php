@@ -24,15 +24,28 @@ header("Content-Type: application/json");
 $response = '';
 if(strpos($text, "/start") === 0 || $text=="ciao")
 {
-	$response = "Ciao $firstname, benvenuto!";
+	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, oppure il comando /elenco per vedere chi hai da chiamare oggi.";
+	
+	$link = mysql_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK");
+	if(!$link)
+	{
+		$response."impossibile stabilire una connessione ". mysql_error();
+	}
+	
+	$DBsel = mysql_select_db("bfFvkAb7fr");
+	if(!$DBsel)
+	{
+		$response."impossibile selezionare la connessione " . mysql_error();
+	}
+	
 }
 elseif(strpos($text, "/inserisci") === 0)
 {
-	$response = "inserisco, dimmi il nome e cognome";
+	$response = "Bello, un nuovo contatto! Se non sai cosa rispondere, scrivi 'no'. Dimmi il nome e cognome:";
 }
 elseif(strpos($text, "/elenco") === 0)
 {
-	$response = "ti dò l'elenco dei da richiamare del giorno".$text;
+	$response = "ti dò l'elenco dei da richiamare del giorno".substr($text,8);
 }
 else
 {
