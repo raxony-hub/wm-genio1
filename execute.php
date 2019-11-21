@@ -30,9 +30,11 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	if(!$link)
 	{
 		$response."impossibile stabilire una connessione ". mysql_error();
+	} else {
+		$response."connesso baby";
 	}
 	
-	//$DBsel = mysql_select_db("bfFvkAb7fr");
+	//$DBsel = mysql_select_db("bfFvkAb7fr", $link);
 	//if(!$DBsel)
 	//{
 	//	$response."impossibile selezionare la connessione " . mysql_error();
