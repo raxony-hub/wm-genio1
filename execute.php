@@ -58,6 +58,8 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	
 	mysqli_close($link);
 	
+	$response."/nprova prova prova";
+	
 	/*$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
 	$server = $url["host"];
