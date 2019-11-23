@@ -33,9 +33,9 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	}
 	
 	if (mysqli_ping($link)) {
-	    $response .= "Our connection is ok!\n";
+	    $response .= "\nOur connection is ok!\n";
 	} else {
-	    $response .= "Error: %s\n".mysqli_error();
+	    $response .= "Error: \n".mysqli_error($link);
 	}
 	
 	/*$DBsel = mysqli_select_db("bfFvkAb7fr", $link);
@@ -48,7 +48,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	$Result = mysqli_query($querry);
 	if( !$Result )
 	{
-		$response .= "errore query: ".mysqli_error();
+		$response .= "\nerrore query: ".mysqli_error($Result);
 	}
 	
 	while($row = mysqli_fetch_array($Result))
