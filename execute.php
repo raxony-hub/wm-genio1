@@ -27,7 +27,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, oppure il comando /elenco per vedere chi hai da chiamare oggi.";
 	/*if(@mysql_ping()) $response.'true';
 	else $response.'false';*/
-	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK");
+	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
     		$response."Connect failed: %s\n".mysqli_connect_error();
     	
@@ -38,11 +38,11 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	} else {
 	    $response."Error: %s\n".mysqli_error();
 	}
-	$DBsel = mysqli_select_db("bfFvkAb7fr", $link);
+	/*$DBsel = mysqli_select_db("bfFvkAb7fr", $link);
 	if(!$DBsel)
 	{
 		$response."impossibile selezionare la connessione " . mysqli_error();
-	}
+	}*/
 	
 	$querry = "SELECT *  FROM Utenti";
 	$Result = mysqli_query($querry);
