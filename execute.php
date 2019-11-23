@@ -38,7 +38,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	    $response .= "Error: \n".mysqli_error($link);
 	}
 	
-	$querry = "LECT * FROM `Utenti` WHERE `Nome` = '$username'";
+	$querry = "SELECT * FROM `Utenti` WHERE `Nome` = '$username'";
 	$Result = mysqli_query($link,$querry);
 	if( !$Result )
 	{
