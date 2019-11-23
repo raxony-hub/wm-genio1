@@ -25,6 +25,7 @@ $response = '';
 if(strpos($text, "/start") === 0 || $text=="ciao")
 {
 	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, oppure il comando /elenco per vedere chi hai da chiamare oggi.";
+	$response."/nprova prova prova";
 	/*if(@mysql_ping()) $response.'true';
 	else $response.'false';*/
 	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
@@ -38,6 +39,9 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	} else {
 	    $response."Error: %s\n".mysqli_error();
 	}
+	
+	$response."/nprova prova prova";
+	
 	/*$DBsel = mysqli_select_db("bfFvkAb7fr", $link);
 	if(!$DBsel)
 	{
