@@ -33,52 +33,39 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	}
 	
 	if (mysqli_ping($link)) {
-	    $response .= "\nOur connection is ok!\n";
+	    $response .= "\n\nOur connection is ok!\n";
 	} else {
 	    $response .= "Error: \n".mysqli_error($link);
 	}
 	
-	/*$DBsel = mysqli_select_db("bfFvkAb7fr", $link);
-	if(!$DBsel)
-	{
-		$response."impossibile selezionare la connessione " . mysqli_error();
-	}*/
-	
-	$querry = "SELECT * FROM `Utenti`";
+	$querry = "SELECT * FROM `Utenti` WHERE Nome = $username";
 	$Result = mysqli_query($link,$querry);
 	if( !$Result )
 	{
 		$response .= "\nerrore query: ".mysqli_error($Result);
 	}
 	
+	$esiste = 0;
+	
 	while($row = mysqli_fetch_array($Result))
 	{
-		$response .= "\n"."Nome utente".$row[1]."\n"."codice".$row[1]."\n"."stato".$row[1];
+		$esiste = $esiste + 1;
+		$response .= "\n"."Nome utente".$row[0]."\n"."codice".$row[1]."\n"."stato".$row[2];
+	}
+	
+	if($esiste == 0)
+	{ 	
+		//creo un nuovo utente;
+		$querry = "INSERT INTO `Utenti` (`Nome`, `N_contatto`, `stato`) VALUES ('$username', '0', 'nuovo')";
+		
+		$Result = mysqli_query($link,$querry);
+		if( !$Result )
+		{
+			$response .= "\nerrore query: ".mysqli_error($Result);
+		}
 	}
 	
 	mysqli_close($link);
-	
-	/*$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-
-	$server = $url["host"];
-	$username = $url["user"];
-	$password = $url["pass"];
-	$db = substr($url["path"], 1);
-
-	$conn = mysqli_connect($server, $username, $password, $db);
-	
-	if (mysqli_connect_errno()) {
-    		$response."Connect failed: %s\n".mysqli_connect_error();
-    	
-	}
-	
-	if (mysqli_ping($conn)) {
-	    $response."Our connection is ok!\n";
-	} else {
-	    $response."Error: %s\n".mysqli_error();
-	}
-	
-	mysqli_close($conn)*/
 }
 elseif(strpos($text, "/inserisci") === 0)
 {
