@@ -65,7 +65,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	$password = $url["pass"];
 	$db = substr($url["path"], 1);
 
-	$conn = new mysqli($server, $username, $password, $db);
+	$conn = mysqli_connect($server, $username, $password, $db);
 	
 	if (mysqli_connect_errno()) {
     		$response."Connect failed: %s\n".mysqli_connect_error();
@@ -78,7 +78,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	    $response."Error: %s\n".mysqli_error();
 	}
 	
-	mysqli_close($conn)
+	//mysqli_close($conn)
 }
 elseif(strpos($text, "/inserisci") === 0)
 {
