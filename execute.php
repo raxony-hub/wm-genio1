@@ -38,12 +38,25 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	} else {
 	    $response."Error: %s\n".mysqli_error($link);
 	}
-	//$DBsel = mysql_select_db("bfFvkAb7fr", $link);
-	//if(!$DBsel)
-	//{
-	//	$response."impossibile selezionare la connessione " . mysql_error();
-	//}
+	$DBsel = mysql_select_db("bfFvkAb7fr", $link);
+	if(!$DBsel)
+	{
+		$response."impossibile selezionare la connessione " . mysqli_error($DBsel);
+	}
 	
+	$querry = "SELECT *  FROM Utenti";
+	$Result = mysql_query($querry);
+	if( !$Result )
+	{
+		$response."errore query: ".mysqli_error($Result);
+	}
+	
+	while($row = mysql_fetch_array($Result))
+	{
+		$response."/n"."Nome utente".$row[1]."/n"."codice".$row[1]."/n"."stato".$row[1];
+	}
+	
+	mysqli_close($link);
 }
 elseif(strpos($text, "/inserisci") === 0)
 {
