@@ -25,16 +25,19 @@ $response = '';
 if(strpos($text, "/start") === 0 || $text=="ciao")
 {
 	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, oppure il comando /elenco per vedere chi hai da chiamare oggi.";
-	if(@mysql_ping()) $response.'true';
-	else $response.'false';
-	/*$link = mysql_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK");
-	if(!$link)
-	{
-		$response."impossibile stabilire una connessione ". mysql_error();
-	} else {
-		$response."connesso baby";
-	}*/
+	/*if(@mysql_ping()) $response.'true';
+	else $response.'false';*/
+	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK");
+	if (mysqli_connect_errno()) {
+    		$response."Connect failed: %s\n".mysqli_connect_error();
+    		exit();
+	}
 	
+	if (mysqli_ping($link)) {
+	    $response."Our connection is ok!\n";
+	} else {
+	    $response."Error: %s\n".mysqli_error($link);
+	}
 	//$DBsel = mysql_select_db("bfFvkAb7fr", $link);
 	//if(!$DBsel)
 	//{
