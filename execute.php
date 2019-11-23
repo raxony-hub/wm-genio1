@@ -22,21 +22,25 @@ $text = strtolower($text);
 header("Content-Type: application/json");
 
 $response = '';
+
+$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
+if (mysqli_connect_errno()) {
+	$response .= "Connect failed: %s\n".mysqli_connect_error();
+
+}
+
+if (mysqli_ping($link)) {
+    $response .= "\n\nOur connection is ok!\n";
+} else {
+    $response .= "Error: \n".mysqli_error($link);
+}
+
+
 if(strpos($text, "/start") === 0 || $text=="ciao")
 {
 	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, oppure il comando /elenco per vedere chi hai da chiamare oggi. :)";
 
-	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
-	if (mysqli_connect_errno()) {
-    		$response .= "Connect failed: %s\n".mysqli_connect_error();
-    	
-	}
 	
-	if (mysqli_ping($link)) {
-	    $response .= "\n\nOur connection is ok!\n";
-	} else {
-	    $response .= "Error: \n".mysqli_error($link);
-	}
 	
 	$querry = "SELECT * FROM `Utenti` WHERE `Nome` = '$username'";
 	$Result = mysqli_query($link,$querry);
@@ -56,12 +60,10 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 			$response .= "\nerrore query (insert): ".mysqli_error($Result);
 		}
 	}
-	
-	mysqli_close($link);
 }
 elseif(strpos($text, "/inserisci") === 0)
 {
-	$response = "Bello, un nuovo contatto! Se non sai cosa rispondere, scrivi 'no'. Dimmi il nome e cognome:";
+	$response = "Bello, un nuovo contatto! Ti farò delle domande per registrare i suoi dati. Se non sai cosa rispondere, scrivi 'no'. Dimmi il nome e cognome:";
 }
 elseif(strpos($text, "/elenco") === 0)
 {
@@ -71,6 +73,8 @@ else
 {
 	$response = "Comando non valido!";
 }
+
+mysqli_close($link);
 
 $parameters = array('chat_id' => $chatId, "text" => $response);
 $parameters["method"] = "sendMessage";
