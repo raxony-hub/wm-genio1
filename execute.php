@@ -27,7 +27,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, oppure il comando /elenco per vedere chi hai da chiamare oggi.";
 	/*if(@mysql_ping()) $response.'true';
 	else $response.'false';*/
-	/*$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK");
+	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK");
 	if (mysqli_connect_errno()) {
     		$response."Connect failed: %s\n".mysqli_connect_error();
     	
@@ -56,9 +56,9 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 		$response."/n"."Nome utente".$row[1]."/n"."codice".$row[1]."/n"."stato".$row[1];
 	}
 	
-	mysqli_close($link);*/
+	mysqli_close($link);
 	
-	$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+	/*$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
 	$server = $url["host"];
 	$username = $url["user"];
@@ -78,7 +78,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	    $response."Error: %s\n".mysqli_error();
 	}
 	
-	//mysqli_close($conn)
+	mysqli_close($conn)*/
 }
 elseif(strpos($text, "/inserisci") === 0)
 {
