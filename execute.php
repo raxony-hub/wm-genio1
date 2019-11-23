@@ -42,26 +42,18 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	$Result = mysqli_query($link,$querry);
 	if( !$Result )
 	{
-		$response .= "\nerrore query: ".mysqli_error($Result);
+		$response .= "\nerrore query (select): ".mysqli_error($Result);
 	}
 	
-	$esiste = 0;
-	
-	while($row = mysqli_fetch_array($Result))
+	if (mysqli_num_rows($Result) > 0)
 	{
-		$esiste = $esiste + 1;
-		$response .= "\n"."Nome utente".$row[0]."\n"."codice".$row[1]."\n"."stato".$row[2];
-	}
-	
-	if($esiste == 0)
-	{ 	
 		//creo un nuovo utente;
 		$querry = "INSERT INTO `Utenti` (`Nome`, `N_contatto`, `stato`) VALUES ('$username', '0', 'nuovo')";
 		
 		$Result = mysqli_query($link,$querry);
 		if( !$Result )
 		{
-			$response .= "\nerrore query: ".mysqli_error($Result);
+			$response .= "\nerrore query (insert): ".mysqli_error($Result);
 		}
 	}
 	
