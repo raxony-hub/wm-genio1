@@ -30,7 +30,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK");
 	if (mysqli_connect_errno()) {
     		$response."Connect failed: %s\n".mysqli_connect_error();
-    		exit();
+    	
 	}
 	
 	if (mysqli_ping($link)) {
