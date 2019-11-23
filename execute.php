@@ -45,7 +45,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
 	}
 	
-	if (mysqli_num_rows($Result) > 0)
+	if (mysqli_num_rows($Result) == 0)
 	{
 		//creo un nuovo utente;
 		$querry = "INSERT INTO `Utenti` (`Nome`, `N_contatto`, `stato`) VALUES ('$username', '0', 'nuovo')";
