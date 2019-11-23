@@ -25,7 +25,8 @@ $response = '';
 if(strpos($text, "/start") === 0 || $text=="ciao")
 {
 	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, oppure il comando /elenco per vedere chi hai da chiamare oggi.";
-	
+	if(@mysql_ping()) $response.'true';
+	else $response.'false';
 	/*$link = mysql_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK");
 	if(!$link)
 	{
