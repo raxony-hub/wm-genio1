@@ -25,22 +25,22 @@ $response = '';
 if(strpos($text, "/start") === 0 || $text=="ciao")
 {
 	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, oppure il comando /elenco per vedere chi hai da chiamare oggi. :)";
-	$response."/nprova prova prova";
+	$response = $response."/nprova prova prova";
 	/*if(@mysql_ping()) $response.'true';
 	else $response.'false';*/
 	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
-    		$response."Connect failed: %s\n".mysqli_connect_error();
+    		$response = $response."Connect failed: %s\n".mysqli_connect_error();
     	
 	}
 	
 	if (mysqli_ping($link)) {
-	    $response."Our connection is ok!\n";
+	    $response = $response."Our connection is ok!\n";
 	} else {
-	    $response."Error: %s\n".mysqli_error();
+	    $response = $response."Error: %s\n".mysqli_error();
 	}
 	
-	$response."/nprova prova prova";
+	$response = $response."/nprova prova prova";
 	
 	/*$DBsel = mysqli_select_db("bfFvkAb7fr", $link);
 	if(!$DBsel)
@@ -52,17 +52,17 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	$Result = mysqli_query($querry);
 	if( !$Result )
 	{
-		$response."errore query: ".mysqli_error();
+		$response = $response."errore query: ".mysqli_error();
 	}
 	
 	while($row = mysqli_fetch_array($Result))
 	{
-		$response."/n"."Nome utente".$row[1]."/n"."codice".$row[1]."/n"."stato".$row[1];
+		$response = $response."/n"."Nome utente".$row[1]."/n"."codice".$row[1]."/n"."stato".$row[1];
 	}
 	
 	mysqli_close($link);
 	
-	$response."/nprova prova prova";
+	$response = $response."/nprova prova prova";
 	
 	/*$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
