@@ -45,7 +45,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	}*/
 	
 	$querry = "SELECT * FROM `Utenti`";
-	$Result = mysqli_query($querry);
+	$Result = mysqli_query($link,$querry);
 	if( !$Result )
 	{
 		$response .= "\nerrore query: ".mysqli_error($Result);
