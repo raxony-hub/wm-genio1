@@ -26,13 +26,13 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 {
 	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, oppure il comando /elenco per vedere chi hai da chiamare oggi.";
 	
-	$link = mysql_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK");
+	/*$link = mysql_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK");
 	if(!$link)
 	{
 		$response."impossibile stabilire una connessione ". mysql_error();
 	} else {
 		$response."connesso baby";
-	}
+	}*/
 	
 	//$DBsel = mysql_select_db("bfFvkAb7fr", $link);
 	//if(!$DBsel)
