@@ -36,22 +36,22 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	if (mysqli_ping($link)) {
 	    $response."Our connection is ok!\n";
 	} else {
-	    $response."Error: %s\n".mysqli_error($link);
+	    $response."Error: %s\n".mysqli_error();
 	}
 	$DBsel = mysql_select_db("bfFvkAb7fr", $link);
 	if(!$DBsel)
 	{
-		$response."impossibile selezionare la connessione " . mysqli_error($DBsel);
+		$response."impossibile selezionare la connessione " . mysqli_error();
 	}
 	
 	$querry = "SELECT *  FROM Utenti";
-	$Result = mysql_query($querry);
+	$Result = mysqli_query($querry);
 	if( !$Result )
 	{
-		$response."errore query: ".mysqli_error($Result);
+		$response."errore query: ".mysqli_error();
 	}
 	
-	while($row = mysql_fetch_array($Result))
+	while($row = mysqli_fetch_array($Result))
 	{
 		$response."/n"."Nome utente".$row[1]."/n"."codice".$row[1]."/n"."stato".$row[1];
 	}
