@@ -28,14 +28,14 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 
 	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
-    		$response .= $response."Connect failed: %s\n".mysqli_connect_error();
+    		$response .= "Connect failed: %s\n".mysqli_connect_error();
     	
 	}
 	
 	if (mysqli_ping($link)) {
-	    $response .= $response."Our connection is ok!\n";
+	    $response .= "Our connection is ok!\n";
 	} else {
-	    $response .= $response."Error: %s\n".mysqli_error();
+	    $response .= "Error: %s\n".mysqli_error();
 	}
 	
 	/*$DBsel = mysqli_select_db("bfFvkAb7fr", $link);
@@ -44,21 +44,19 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 		$response."impossibile selezionare la connessione " . mysqli_error();
 	}*/
 	
-	$querry = "SELECT * FROM 'Utenti'";
+	$querry = "SELECT * FROM `Utenti`";
 	$Result = mysqli_query($querry);
 	if( !$Result )
 	{
-		$response .= $response."errore query: ".mysqli_error();
+		$response .= "errore query: ".mysqli_error();
 	}
 	
 	while($row = mysqli_fetch_array($Result))
 	{
-		$response .= $response."\n"."Nome utente".$row[1]."\n"."codice".$row[1]."\n"."stato".$row[1];
+		$response .= "\n"."Nome utente".$row[1]."\n"."codice".$row[1]."\n"."stato".$row[1];
 	}
 	
 	mysqli_close($link);
-	
-	$response = $response."/nprova prova prova";
 	
 	/*$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
