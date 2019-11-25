@@ -122,7 +122,7 @@ else
 	switch($stato_volantinatore)
 	{
 		case "ins_nome":
-			$querry = "INSERT INTO `Contatti` (`N_contatto`, `utente`, `data_ins`, `nom_cogn`, `numerone`, `note_v`, `data_d`, `data_r`, `ora_r`, `note_r`, `integrazione`) VALUES ('$codice_cliente', '$text', '2019-11-25', '', NULL, '', NULL, NULL, NULL, '', NULL);";
+			$querry = "INSERT INTO `Contatti` (`N_contatto`, `utente`, `data_ins`, `nom_cogn`, `numerone`, `note_v`, `data_d`, `data_r`, `ora_r`, `note_r`, `integrazione`) VALUES ('$codice_cliente', '$text', 'date(\"Y-m-d\")', '', NULL, '', NULL, NULL, NULL, '', NULL);";
 			$Result = mysqli_query($link,$querry);
 			if( !$Result )
 			{
