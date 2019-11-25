@@ -76,6 +76,7 @@ elseif(strpos($text, "/inserisci") === 0)
 		while($row = mysql_fetch_array($Result))
 		{
 			$codice_cliente = $row[1] + 1;
+			$response .= "\n codice cliente =".($row[1] + 1);
 		}
 	}
 	
@@ -92,6 +93,8 @@ elseif(strpos($text, "/inserisci") === 0)
 	if( !$Result )
 	{
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
+	} else {
+		$response .= "\n codice aggiornato correttamente";
 	}
 
 }
