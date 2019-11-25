@@ -39,7 +39,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	    $response .= "Error: \n".mysqli_error($link);
 	}
 	
-	/*$querry = "SELECT * FROM `Utenti` WHERE `Nome` = '$username'";
+	$querry = "SELECT * FROM `Utenti` WHERE `Nome` = '$username'";
 	$Result = mysqli_query($link,$querry);
 	if( !$Result )
 	{
@@ -56,7 +56,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 		{
 			$response .= "\nerrore query (insert): ".mysqli_error($Result);
 		}
-	}*/
+	}
 	
 	mysqli_close($link);
 }
@@ -66,7 +66,7 @@ elseif(strpos($text, "/inserisci") === 0)
 
 	//recupero il codice univoco del "cliente" che poi userò per registrarlo
 	
-	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
+	/*$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
 		$response .= "Connect failed: %s\n".mysqli_connect_error();
 
@@ -91,7 +91,7 @@ elseif(strpos($text, "/inserisci") === 0)
 			$codice_cliente = $row[1] + 1;
 			$response .= "\n codice cliente =".($row[1] + 1);
 		}
-	}
+	}*/
 	
 	//Aggiorno il codice_utente nuovo nuovo
 	/*$querry = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente' WHERE `Utenti`.`Nome` = 'tony'";
@@ -124,7 +124,7 @@ else
 	//$response = "Comando non valido!";
 	//recupero lo stato del volantinatore per capire csa sta facendo:
 	
-	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
+	/*$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
 		$response .= "Connect failed: %s\n".mysqli_connect_error();
 
@@ -170,7 +170,7 @@ else
 			break;
 	}
 
-	mysqli_close($link);
+	mysqli_close($link);*/
 }
 
 
