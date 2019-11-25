@@ -95,19 +95,17 @@ elseif(strpos($text, "/inserisci") === 0)
 	if( !$Result2 )
 	{
 		$response .= "\nerrore query (select): ".mysqli_error($Result2);
-		break;
 	}
 	
-	$querry3 = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente', `stato` = 'ins_nome' WHERE `Utenti`.`Nome` = '$username'";
+	/*$querry3 = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente', `stato` = 'ins_nome' WHERE `Utenti`.`Nome` = '$username'";
 	$Result3 = mysqli_query($link1,$querry3);
 	if( !$Result3 )
 	{
 		$response .= "\nerrore query (select): ".mysqli_error($Result3);
-		break;
 	} else {
 		$response .= "\n codice aggiornato correttamente";
 	}
-	
+	*/
 	mysqli_close($link1);
 
 }
