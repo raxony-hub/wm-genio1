@@ -143,19 +143,20 @@ else
 		
 	$codice_cliente = $row[1];
 	$stato_volantinatore = $row[2];
+	$data_oggi = date("Y-m-d");
 	$response .= "\n codice cliente: ".$codice_cliente." stato vol: ".$stato_volantinatore;
 	
 	switch($stato_volantinatore)
 	{
 		case "ins_nome":
-			$querry = "INSERT INTO `Contatti` (`N_contatto`, `utente`, `data_ins`, `nom_cogn`, `numerone`, `note_v`, `data_d`, `data_r`, `ora_r`, `note_r`, `integrazione`) VALUES ('$codice_cliente', '$text', 'date(\"Y-m-d\")', '', NULL, '', NULL, NULL, NULL, '', NULL);";
+			$querry = "INSERT INTO `Contatti` (`N_contatto`, `utente`, `data_ins`, `nom_cogn`, `numerone`, `note_v`, `data_d`, `data_r`, `ora_r`, `note_r`, `integrazione`) VALUES ('$codice_cliente', '$text', '$data_oggi', '', NULL, '', NULL, NULL, NULL, '', NULL);";
 			$Result = mysqli_query($link,$querry);
 			if( !$Result )
 			{
 				$response .= "\nerrore query (select): ".mysqli_error($Result);
 			}
 			
-			$response .= "\nnome inserito correttamente! Ora inserisci la data della demo a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: date(\"Y-m-d\")):";
+			$response .= "\nnome inserito correttamente! Ora inserisci la data della demo a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: $data_oggi):";
 			
 			break;
 		default:
