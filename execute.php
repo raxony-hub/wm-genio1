@@ -149,14 +149,48 @@ else
 	switch($stato_volantinatore)
 	{
 		case "ins_nome":
-			$querry = "INSERT INTO `Contatti` (`N_contatto`, `utente`, `data_ins`, `nom_cogn`, `numerone`, `note_v`, `data_d`, `data_r`, `ora_r`, `note_r`, `integrazione`) VALUES ('$codice_cliente', '$text', '$data_oggi', '', NULL, '', NULL, NULL, NULL, '', NULL);";
+			$querry = "INSERT INTO `Contatti` (`N_contatto`, `utente`, `data_ins`, `nom_cogn`, `numerone`, `note_v`, `data_d`, `data_r`, `ora_r`, `note_r`, `integrazione`) VALUES ('$codice_cliente', '$username', '$data_oggi', '$text', NULL, '', NULL, NULL, NULL, '', NULL);";
 			$Result = mysqli_query($link,$querry);
 			if( !$Result )
 			{
 				$response .= "\nerrore query (select): ".mysqli_error($Result);
 			}
 			
+			$querry3 = "UPDATE `Utenti` SET `stato` = 'ins_data_demo' WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($Result3);
+			}
+
+			$response .= "\n codice aggiornato correttamente";
+			
 			$response .= "\nnome inserito correttamente! Ora inserisci la data della demo a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: $data_oggi):";
+			
+			break;
+		case "ins_data_demo":
+			//modifico stato volantinatore.
+			$querry3 = "UPDATE `Utenti` SET `stato` = 'ins_data_ric' WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($Result3);
+			}
+
+			$response .= "\n codice aggiornato correttamente";
+			
+			// inserisco i dati.
+			
+			$response .= "\ndata della demo inserita correttamente! Ora inserisci la data del richiamo a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: $data_oggi):";
+			
+			$querry3 = "UPDATE `Contatti` SET `data_d` = '$text' WHERE `Contatti`.`N_contatto` = $codice_cliente";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($Result3);
+			}
+
+			$response .= "\n codice aggiornato correttamente";
 			
 			break;
 		default:
