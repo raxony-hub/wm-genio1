@@ -90,7 +90,7 @@ elseif(strpos($text, "/inserisci") === 0)
 	$response .= "\n codice cliente =".($row[1] + 1);
 	
 	//Aggiorno il codice_utente nuovo nuovo
-	/*$querry = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente' WHERE `Utenti`.`Nome` = 'tony'";
+	$querry = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente' WHERE `Utenti`.`Nome` = 'tony'";
 	$Result = mysqli_query($link,$querry);
 	if( !$Result )
 	{
@@ -106,7 +106,7 @@ elseif(strpos($text, "/inserisci") === 0)
 		break;
 	} else {
 		$response .= "\n codice aggiornato correttamente";
-	}*/
+	}
 	
 	mysqli_close($link1);
 
@@ -120,7 +120,7 @@ else
 	//$response = "Comando non valido!";
 	//recupero lo stato del volantinatore per capire csa sta facendo:
 	
-	/*$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
+	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
 		$response .= "Connect failed: %s\n".mysqli_connect_error();
 
@@ -141,12 +141,12 @@ else
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
 		break;
 	} else {
-		while($row = mysqli_fetch_array($Result, MYSQLI_NUM))
-		{
-			$codice_cliente = $row[1];
-			$stato_volantinatore = $row[2];
-		}
+		$row = mysqli_fetch_array($Result, MYSQLI_NUM);
+		
+		$codice_cliente = $row[1];
+		$stato_volantinatore = $row[2];
 	}
+	
 	
 	switch($stato_volantinatore)
 	{
@@ -166,7 +166,7 @@ else
 			break;
 	}
 
-	mysqli_close($link);*/
+	mysqli_close($link);
 }
 
 
