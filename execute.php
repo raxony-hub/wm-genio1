@@ -85,9 +85,9 @@ elseif(strpos($text, "/inserisci") === 0)
 		$response .= "\nerrore query (select): ".mysqli_error($Result1);
 	}
 	
-	$row = mysqli_fetch_array($Result1)
+	/*$row = mysqli_fetch_array($Result1)
 	$codice_cliente = $row[1] + 1;
-	$response .= "\n codice cliente =".($row[1] + 1);
+	$response .= "\n codice cliente =".($row[1] + 1);*/
 	
 	//Aggiorno il codice_utente nuovo nuovo
 	/*$querry = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente' WHERE `Utenti`.`Nome` = 'tony'";
@@ -108,7 +108,7 @@ elseif(strpos($text, "/inserisci") === 0)
 		$response .= "\n codice aggiornato correttamente";
 	}*/
 	
-	mysqli_close($link);
+	mysqli_close($link1);
 
 }
 elseif(strpos($text, "/elenco") === 0)
