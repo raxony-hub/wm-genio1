@@ -43,7 +43,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	$Result = mysqli_query($link,$querry);
 	if( !$Result )
 	{
-		$response .= "\nerrore query (select): ".mysqli_error($Result);
+		$response .= "\nerrore query (select): ".mysqli_error($link);
 	}
 	
 	if (mysqli_num_rows($Result) == 0)
@@ -54,7 +54,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 		$Result = mysqli_query($link,$querry);
 		if( !$Result )
 		{
-			$response .= "\nerrore query (insert): ".mysqli_error($Result);
+			$response .= "\nerrore query (insert): ".mysqli_error($link);
 		}
 	}
 	
@@ -82,7 +82,7 @@ elseif(strpos($text, "/inserisci") === 0)
 	$Result1 = mysqli_query($link1,$querry1);
 	if( !$Result1 )
 	{
-		$response .= "\nerrore query (select): ".mysqli_error($Result1);
+		$response .= "\nerrore query (select): ".mysqli_error($link1);
 	}
 	
 	$row = mysqli_fetch_array($Result1, MYSQLI_NUM);
@@ -94,14 +94,14 @@ elseif(strpos($text, "/inserisci") === 0)
 	$Result2 = mysqli_query($link1,$querry2);
 	if( !$Result2 )
 	{
-		$response .= "\nerrore query (select): ".mysqli_error($Result2);
+		$response .= "\nerrore query (select): ".mysqli_error($link1);
 	}
 	
 	$querry3 = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente', `stato` = 'ins_nome' WHERE `Utenti`.`Nome` = '$username'";
 	$Result3 = mysqli_query($link1,$querry3);
 	if( !$Result3 )
 	{
-		$response .= "\nerrore query (select): ".mysqli_error($Result3);
+		$response .= "\nerrore query (select): ".mysqli_error($link1);
 	}
 		
 	$response .= "\n codice aggiornato correttamente";
@@ -136,7 +136,7 @@ else
 	$Result = mysqli_query($link,$querry);
 	if( !$Result )
 	{
-		$response .= "\nerrore query (select): ".mysqli_error($Result);
+		$response .= "\nerrore query (select): ".mysqli_error($link);
 	}
 	
 	$row = mysqli_fetch_array($Result, MYSQLI_NUM);
@@ -153,14 +153,14 @@ else
 			$Result = mysqli_query($link,$querry);
 			if( !$Result )
 			{
-				$response .= "\nerrore query (select): ".mysqli_error($Result);
+				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
 			
 			$querry3 = "UPDATE `Utenti` SET `stato` = 'ins_data_demo' WHERE `Utenti`.`Nome` = '$username'";
 			$Result3 = mysqli_query($link,$querry3);
 			if( !$Result3 )
 			{
-				$response .= "\nerrore query (select): ".mysqli_error($Result3);
+				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
 
 			$response .= "\n codice aggiornato correttamente";
@@ -174,7 +174,7 @@ else
 			$Result3 = mysqli_query($link,$querry3);
 			if( !$Result3 )
 			{
-				$response .= "\nerrore query (select): ".mysqli_error($Result3);
+				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
 
 			$response .= "\n codice aggiornato correttamente";
@@ -187,7 +187,7 @@ else
 			$Result3 = mysqli_query($link,$querry3);
 			if( !$Result3 )
 			{
-				$response .= "\nerrore query (select): ".mysqli_error($Result3);
+				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
 
 			$response .= "\n codice aggiornato correttamente";
