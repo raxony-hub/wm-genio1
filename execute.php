@@ -145,7 +145,7 @@ else
 	$stato_volantinatore = $row[2];
 	$response .= "\n codice cliente: ".$codice_cliente." stato vol: ".$stato_volantinatore;
 	
-	/*switch($stato_volantinatore)
+	switch($stato_volantinatore)
 	{
 		case "ins_nome":
 			$querry = "INSERT INTO `Contatti` (`N_contatto`, `utente`, `data_ins`, `nom_cogn`, `numerone`, `note_v`, `data_d`, `data_r`, `ora_r`, `note_r`, `integrazione`) VALUES ('$codice_cliente', '$text', 'date(\"Y-m-d\")', '', NULL, '', NULL, NULL, NULL, '', NULL);";
@@ -161,7 +161,7 @@ else
 		default:
 			$response .= "\n\nstato utente sconosciuto";
 			break;
-	}*/
+	}
 
 	mysqli_close($link);
 }
