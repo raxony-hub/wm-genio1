@@ -134,7 +134,7 @@ else
 	$codice_cliente = 0;
 	$querry = "SELECT * FROM `Utenti` WHERE `Nome` = '$username'";
 	$Result = mysqli_query($link,$querry);
-	if( !$Result )
+	/*if( !$Result )
 	{
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
 		break;
