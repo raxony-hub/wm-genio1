@@ -85,7 +85,7 @@ elseif(strpos($text, "/inserisci") === 0)
 		$response .= "\nerrore query (select): ".mysqli_error($Result1);
 	}
 	
-	$row = mysqli_fetch_array($Result1, MYSQLI_NUM)
+	$row = mysqli_fetch_array($Result1, MYSQLI_NUM);
 	$codice_cliente = $row[1] + 1;
 	$response .= "\n codice cliente =".($row[1] + 1);
 	
