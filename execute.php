@@ -118,7 +118,7 @@ else
 	//$response = "Comando non valido!";
 	//recupero lo stato del volantinatore per capire csa sta facendo:
 	
-	/*$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
+	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
 		$response .= "Connect failed: %s\n".mysqli_connect_error();
 
@@ -138,12 +138,12 @@ else
 	{
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
 		break;
-	} else {
-		$row = mysqli_fetch_array($Result, MYSQLI_NUM);
-		
-		$codice_cliente = $row[1];
-		$stato_volantinatore = $row[2];
 	}
+	
+	$row = mysqli_fetch_array($Result, MYSQLI_NUM);
+		
+	$codice_cliente = $row[1];
+	$stato_volantinatore = $row[2];
 	
 	
 	switch($stato_volantinatore)
@@ -154,17 +154,17 @@ else
 			if( !$Result )
 			{
 				$response .= "\nerrore query (select): ".mysqli_error($Result);
-				break;
-			} else {
-				$response .= "\nnome inserito correttamente!";
 			}
+			
+			$response .= "\nnome inserito correttamente!";
+			
 			break;
 		default:
 			$response .= "\n\nstato utente sconosciuto";
 			break;
 	}
 
-	mysqli_close($link);*/
+	mysqli_close($link);
 }
 
 
