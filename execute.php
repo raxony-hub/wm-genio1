@@ -85,9 +85,9 @@ elseif(strpos($text, "/inserisci") === 0)
 		$response .= "\nerrore query (select): ".mysqli_error($Result1);
 	}
 	
-	/*$row = mysqli_fetch_array($Result1)
+	$row = mysqli_fetch_array($Result1, MYSQLI_NUM)
 	$codice_cliente = $row[1] + 1;
-	$response .= "\n codice cliente =".($row[1] + 1);*/
+	$response .= "\n codice cliente =".($row[1] + 1);
 	
 	//Aggiorno il codice_utente nuovo nuovo
 	/*$querry = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente' WHERE `Utenti`.`Nome` = 'tony'";
@@ -141,7 +141,7 @@ else
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
 		break;
 	} else {
-		while($row = mysqli_fetch_array($Result))
+		while($row = mysqli_fetch_array($Result, MYSQLI_NUM))
 		{
 			$codice_cliente = $row[1];
 			$stato_volantinatore = $row[2];
