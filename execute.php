@@ -66,7 +66,7 @@ elseif(strpos($text, "/inserisci") === 0)
 
 	//recupero il codice univoco del "cliente" che poi userò per registrarlo
 	
-	/*$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
+	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
 		$response .= "Connect failed: %s\n".mysqli_connect_error();
 
@@ -91,7 +91,7 @@ elseif(strpos($text, "/inserisci") === 0)
 			$codice_cliente = $row[1] + 1;
 			$response .= "\n codice cliente =".($row[1] + 1);
 		}
-	}*/
+	}
 	
 	//Aggiorno il codice_utente nuovo nuovo
 	/*$querry = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente' WHERE `Utenti`.`Nome` = 'tony'";
