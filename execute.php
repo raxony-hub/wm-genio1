@@ -64,6 +64,36 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 elseif(strpos($text, "/inserisci") === 0)
 {
 	$response = "Bello, un nuovo contatto! Ti farò delle domande per registrare i suoi dati. Se non sai cosa rispondere, scrivi 'no'. Dimmi il nome e cognome:";
+
+	//recupero il codice univoco del "cliente" che poi userò per registrarlo
+	$codice_cliente = 0;
+	$querry = "SELECT * FROM `Utenti` WHERE `Nome` = 'tony'";
+	$Result = mysqli_query($link,$querry);
+	if( !$Result )
+	{
+		$response .= "\nerrore query (select): ".mysqli_error($Result);
+	} else {
+		while($row = mysql_fetch_array($Result))
+		{
+			$codice_cliente = $row[1] + 1;
+		}
+	}
+	
+	//Aggiorno il codice_utente nuovo nuovo
+	$querry = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente' WHERE `Utenti`.`Nome` = 'tony'";
+	$Result = mysqli_query($link,$querry);
+	if( !$Result )
+	{
+		$response .= "\nerrore query (select): ".mysqli_error($Result);
+	}
+	
+	$querry = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente', `stato` = 'ins_nome' WHERE `Utenti`.`Nome` = '$username'";
+	$Result = mysqli_query($link,$querry);
+	if( !$Result )
+	{
+		$response .= "\nerrore query (select): ".mysqli_error($Result);
+	}
+
 }
 elseif(strpos($text, "/elenco") === 0)
 {
@@ -71,7 +101,41 @@ elseif(strpos($text, "/elenco") === 0)
 }
 else
 {
-	$response = "Comando non valido!";
+	//$response = "Comando non valido!";
+	//recupero lo stato del volantinatore per capire csa sta facendo:
+	
+	$stato_volantinatore = "";
+	$codice_cliente = 0;
+	$querry = "SELECT * FROM `Utenti` WHERE `Nome` = '$username'";
+	$Result = mysqli_query($link,$querry);
+	if( !$Result )
+	{
+		$response .= "\nerrore query (select): ".mysqli_error($Result);
+	} else {
+		while($row = mysql_fetch_array($Result))
+		{
+			$codice_cliente = $row[1];
+			$stato_volantinatore = $row[2];
+		}
+	}
+	
+	switch($stato_volantinatore)
+	{
+		case "ins_nome":
+			$querry = "INSERT INTO `Contatti` (`N_contatto`, `utente`, `data_ins`, `nom_cogn`, `numerone`, `note_v`, `data_d`, `data_r`, `ora_r`, `note_r`, `integrazione`) VALUES ('$codice_cliente', '$text', '2019-11-25', '', NULL, '', NULL, NULL, NULL, '', NULL);";
+			$Result = mysqli_query($link,$querry);
+			if( !$Result )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($Result);
+			} else {
+				$response .= "\nnome inserito correttamente!";
+			}
+			break;
+		default:
+			$response .= "\n\nstato utente sconosciuto";
+			break;
+	}
+		
 }
 
 mysqli_close($link);
