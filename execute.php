@@ -82,7 +82,7 @@ elseif(strpos($text, "/inserisci") === 0)
 	}
 	
 	//Aggiorno il codice_utente nuovo nuovo
-	$querry = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente' WHERE `Utenti`.`Nome` = 'tony'";
+	/*$querry = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente' WHERE `Utenti`.`Nome` = 'tony'";
 	$Result = mysqli_query($link,$querry);
 	if( !$Result )
 	{
@@ -98,7 +98,7 @@ elseif(strpos($text, "/inserisci") === 0)
 		break;
 	} else {
 		$response .= "\n codice aggiornato correttamente";
-	}
+	}*/
 
 }
 elseif(strpos($text, "/elenco") === 0)
