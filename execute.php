@@ -72,6 +72,7 @@ elseif(strpos($text, "/inserisci") === 0)
 	if( !$Result )
 	{
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
+		break;
 	} else {
 		while($row = mysql_fetch_array($Result))
 		{
@@ -86,6 +87,7 @@ elseif(strpos($text, "/inserisci") === 0)
 	if( !$Result )
 	{
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
+		break;
 	}
 	
 	$querry = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente', `stato` = 'ins_nome' WHERE `Utenti`.`Nome` = '$username'";
@@ -93,6 +95,7 @@ elseif(strpos($text, "/inserisci") === 0)
 	if( !$Result )
 	{
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
+		break;
 	} else {
 		$response .= "\n codice aggiornato correttamente";
 	}
@@ -114,6 +117,7 @@ else
 	if( !$Result )
 	{
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
+		break;
 	} else {
 		while($row = mysql_fetch_array($Result))
 		{
@@ -130,6 +134,7 @@ else
 			if( !$Result )
 			{
 				$response .= "\nerrore query (select): ".mysqli_error($Result);
+				break;
 			} else {
 				$response .= "\nnome inserito correttamente!";
 			}
