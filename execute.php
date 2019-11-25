@@ -84,12 +84,11 @@ elseif(strpos($text, "/inserisci") === 0)
 	if( !$Result )
 	{
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
-		break;
-	} else {
-		$row = mysqli_fetch_array($Result)
-		$codice_cliente = $row[1] + 1;
-		$response .= "\n codice cliente =".($row[1] + 1);
 	}
+	
+	$row = mysqli_fetch_array($Result)
+	$codice_cliente = $row[1] + 1;
+	$response .= "\n codice cliente =".($row[1] + 1);
 	
 	//Aggiorno il codice_utente nuovo nuovo
 	/*$querry = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente' WHERE `Utenti`.`Nome` = 'tony'";
