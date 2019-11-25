@@ -86,11 +86,9 @@ elseif(strpos($text, "/inserisci") === 0)
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
 		break;
 	} else {
-		while($row = mysqli_fetch_array($Result))
-		{
-			$codice_cliente = $row[1] + 1;
-			$response .= "\n codice cliente =".($row[1] + 1);
-		}
+		$row = mysqli_fetch_array($Result)
+		$codice_cliente = $row[1] + 1;
+		$response .= "\n codice cliente =".($row[1] + 1);
 	}
 	
 	//Aggiorno il codice_utente nuovo nuovo
