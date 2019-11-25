@@ -39,7 +39,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	    $response .= "Error: \n".mysqli_error($link);
 	}
 	
-	$querry = "SELECT * FROM `Utenti` WHERE `Nome` = '$username'";
+	/*$querry = "SELECT * FROM `Utenti` WHERE `Nome` = '$username'";
 	$Result = mysqli_query($link,$querry);
 	if( !$Result )
 	{
@@ -56,7 +56,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 		{
 			$response .= "\nerrore query (insert): ".mysqli_error($Result);
 		}
-	}
+	}*/
 	
 	mysqli_close($link);
 }
@@ -86,7 +86,7 @@ elseif(strpos($text, "/inserisci") === 0)
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
 		break;
 	} else {
-		while($row = mysql_fetch_array($Result))
+		while($row = mysqli_fetch_array($Result))
 		{
 			$codice_cliente = $row[1] + 1;
 			$response .= "\n codice cliente =".($row[1] + 1);
@@ -145,7 +145,7 @@ else
 		$response .= "\nerrore query (select): ".mysqli_error($Result);
 		break;
 	} else {
-		while($row = mysql_fetch_array($Result))
+		while($row = mysqli_fetch_array($Result))
 		{
 			$codice_cliente = $row[1];
 			$stato_volantinatore = $row[2];
