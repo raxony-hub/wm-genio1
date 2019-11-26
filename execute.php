@@ -245,9 +245,9 @@ else
 			// inserisco i dati.
 			if(strtolower($text) === "sì"|| strtolower($text) === "si")
 			{
-				$querry3 = "UPDATE `Contatti` SET `integrazione` = 'TRUE' WHERE `Contatti`.`N_contatto` = $codice_cliente";
+				$querry3 = "UPDATE `Contatti` SET `integrazione` = '1' WHERE `Contatti`.`N_contatto` = $codice_cliente";
 			} else {
-				$querry3 = "UPDATE `Contatti` SET `integrazione` = 'FALSE' WHERE `Contatti`.`N_contatto` = $codice_cliente";
+				$querry3 = "UPDATE `Contatti` SET `integrazione` = '0' WHERE `Contatti`.`N_contatto` = $codice_cliente";
 
 			}
 			
