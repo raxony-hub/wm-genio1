@@ -221,6 +221,8 @@ else
 			
 			// inserisco i dati.
 			
+			$text = str_replace(',', '.', $text);
+			
 			$querry3 = "UPDATE `Contatti` SET `ora_r` = '$text' WHERE `Contatti`.`N_contatto` = $codice_cliente";
 			$Result3 = mysqli_query($link,$querry3);
 			if( !$Result3 )
