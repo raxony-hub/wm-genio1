@@ -162,8 +162,6 @@ else
 			{
 				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
-
-			$response .= "\n codice aggiornato correttamente";
 			
 			$response .= "\nnome inserito correttamente! Ora inserisci la data della demo a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: $data_oggi):";
 			
@@ -181,17 +179,84 @@ else
 			
 			// inserisco i dati.
 			
-			$response .= "\ndata della demo inserita correttamente! Ora inserisci la data del richiamo a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: $data_oggi):";
-			
 			$querry3 = "UPDATE `Contatti` SET `data_d` = '$text' WHERE `Contatti`.`N_contatto` = $codice_cliente";
 			$Result3 = mysqli_query($link,$querry3);
 			if( !$Result3 )
 			{
 				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
-
-			$response .= "\n codice aggiornato correttamente";
 			
+			$response .= "\ndata della demo inserita correttamente! Ora inserisci la data del richiamo a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: $data_oggi):";
+			
+			break;
+		case "ins_data_ric":
+			//modifico stato volantinatore.
+			$querry3 = "UPDATE `Utenti` SET `stato` = 'ins_ora_ric' WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			// inserisco i dati.
+			
+			$querry3 = "UPDATE `Contatti` SET `data_r` = '$text' WHERE `Contatti`.`N_contatto` = $codice_cliente";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+
+			$response .= "\ndata della demo inserita correttamente! Ora inserisci l'ora del richiamo nel formato HH,MM (Esempio: 15,30):";
+						
+			break;
+		case "ins_ora_ric":
+			//modifico stato volantinatore.
+			$querry3 = "UPDATE `Utenti` SET `stato` = 'ins_integr' WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			// inserisco i dati.
+			
+			$querry3 = "UPDATE `Contatti` SET `ora_r` = '$text' WHERE `Contatti`.`N_contatto` = $codice_cliente";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+
+			$response .= "\norario della demo inserito correttamente! Questo contatto è un'integrazione di un altro contatto? (sì/no)";
+						
+			break;
+		case "ins_integr":
+			//modifico stato volantinatore.
+			$querry3 = "UPDATE `Utenti` SET `stato` = 'ins_fine' WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			// inserisco i dati.
+			if(strtolower($text) === "sì"|| strtolower($text) === "si")
+			{
+				$querry3 = "UPDATE `Contatti` SET `integrazione` = 'TRUE' WHERE `Contatti`.`N_contatto` = $codice_cliente";
+			} else {
+				$querry3 = "UPDATE `Contatti` SET `integrazione` = 'FALSE' WHERE `Contatti`.`N_contatto` = $codice_cliente";
+
+			}
+			
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+
+			$response .= "\nContatto inserito correttamente. Digita /start per effettuare una nuova azione o /inserisci per inserire un nuovo contatto.";
+						
 			break;
 		default:
 			$response .= "\n\nstato utente sconosciuto";
