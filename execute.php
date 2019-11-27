@@ -111,7 +111,31 @@ elseif(strpos($text, "/inserisci") === 0)
 }
 elseif(strpos($text, "/elenco") === 0)
 {
+	//modifico stato volantinatore in "elenco".
 	$response = "ti dò l'elenco dei da richiamare del giorno".substr($text,8);
+	
+	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
+	if (mysqli_connect_errno()) {
+		$response .= "Connect failed: %s\n".mysqli_connect_error();
+	}
+	if (mysqli_ping($link)) {
+	    $response .= "\n\nOur connection is ok!\n";
+	} else {
+	    $response .= "Error: \n".mysqli_error($link);
+	}
+	
+	$querry3 = "UPDATE `Utenti` SET `stato` = 'elenco' WHERE `Utenti`.`Nome` = '$username'";
+	$Result3 = mysqli_query($link,$querry3);
+	if( !$Result3 )
+	{
+		$response .= "\nerrore query (select): ".mysqli_error($link);
+	}
+
+	$data_oggi = date("Y-m-d");
+	$response .= "\ninserisci la data di quendo vuoi l'elenco dei contatti da richiamare nel formato AAAA-MM-GG (Esempio: $data_oggi). Se vuoi i contatti che devi richiamare oggi, scrivi \"oggi\" in minuscolo:";
+
+	
+	mysqli_close($link);
 }
 else
 {
@@ -259,6 +283,27 @@ else
 
 			$response .= "\nContatto inserito correttamente. Digita /start per effettuare una nuova azione o /inserisci per inserire un nuovo contatto.";
 						
+			break;
+		case "elenco":
+			if(strtolower($text) === "oggi")
+			{
+				$querry = "SELECT * FROM `Contatti` WHERE `utente` = '$username' AND `data_r` = '$data_oggi'";
+			} else {
+				$querry = "SELECT * FROM `Contatti` WHERE `utente` = '$username' AND `data_r` = '$text'";
+			}
+			
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$response .= "\n Persone da richiamare:";
+			while( $row = mysqli_fetch_array($Result, MYSQLI_NUM) )
+			{
+				$response .= "\n$row[3]\ndata demo:$row[6]\ndata richiamo:$row[7]\nora richiamo:str_replace('.', ':', $row[8])\n";
+			}
+			
 			break;
 		default:
 			$response .= "\n\nstato utente sconosciuto";
