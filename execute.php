@@ -394,12 +394,10 @@ else
 				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
 			
-			$response .= "\nEsito contatto modificato correttamente! Digita /start per effettuare una nuova azione o /inserisci per inserire un nuovo contatto.";
-			
 			break;
 			
 		case "esito_nuovo":
-			//recupero iil codice del contatto da modificare.
+			//recupero il codice del contatto da modificare.
 			
 			$querry = "SELECT * FROM `Utenti` WHERE `Nome` = '$username'";
 			
