@@ -459,7 +459,7 @@ else
 			if(strpos(strtolower($text), "oggi") == true)
 			{
 				$data = date("Y-m-d");
-				$ore_vol = str_replace(',', '.',substr($text, 10));
+				$ore_vol = str_replace(',', '.',substr($text, 4));
 			} else {
 				$data = substr($text, 0, 10);
 				$ore_vol = str_replace(',', '.',substr($text, 10));
