@@ -25,7 +25,7 @@ $response = '';
 
 if(strpos($text, "/start") === 0 || $text=="ciao")
 {
-	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, oppure il comando /elenco per vedere chi hai da chiamare oggi. :)";
+	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, il comando /elenco per vedere chi hai da richiamare, il comando /esito per mettere o modificare l'esito di una contatto. :)";
 
 	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
@@ -34,7 +34,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 	}
 
 	if (mysqli_ping($link)) {
-	    $response .= "\n\nOur connection is ok!\n";
+	    //$response .= "\n\nOur connection is ok!\n";
 	} else {
 	    $response .= "Error: \n".mysqli_error($link);
 	}
@@ -73,7 +73,7 @@ elseif(strpos($text, "/inserisci") === 0)
 	}
 
 	if (mysqli_ping($link1)) {
-	    $response .= "\n\nOur connection is ok!\n";
+	    //$response .= "\n\nOur connection is ok!\n";
 	} else {
 	    $response .= "Error: \n".mysqli_error($link1);
 	}
@@ -112,14 +112,13 @@ elseif(strpos($text, "/inserisci") === 0)
 elseif(strpos($text, "/elenco") === 0)
 {
 	//modifico stato volantinatore in "elenco".
-	$response = "ti dò l'elenco dei da richiamare del giorno".substr($text,8);
 	
 	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
 		$response .= "Connect failed: %s\n".mysqli_connect_error();
 	}
 	if (mysqli_ping($link)) {
-	    $response .= "\n\nOur connection is ok!\n";
+	    //$response .= "\n\nOur connection is ok!\n";
 	} else {
 	    $response .= "Error: \n".mysqli_error($link);
 	}
@@ -137,6 +136,33 @@ elseif(strpos($text, "/elenco") === 0)
 	
 	mysqli_close($link);
 }
+elseif(strpos($text, "/esito") === 0)
+{
+	//modifico stato volantinatore in "esito".
+	
+	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
+	if (mysqli_connect_errno()) {
+		$response .= "Connect failed: %s\n".mysqli_connect_error();
+	}
+	if (mysqli_ping($link)) {
+	    //$response .= "\n\nOur connection is ok!\n";
+	} else {
+	    $response .= "Error: \n".mysqli_error($link);
+	}
+	
+	$querry3 = "UPDATE `Utenti` SET `stato` = 'esito' WHERE `Utenti`.`Nome` = '$username'";
+	$Result3 = mysqli_query($link,$querry3);
+	if( !$Result3 )
+	{
+		$response .= "\nerrore query (select): ".mysqli_error($link);
+	}
+
+	$data_oggi = date("Y-m-d");
+	$response .= "\nInserisci il nome e cognome del contatto di cui vuoi modificare l'esito:";
+
+	
+	mysqli_close($link);
+}
 else
 {
 	//$response = "Comando non valido!";
@@ -149,7 +175,7 @@ else
 	}
 
 	if (mysqli_ping($link)) {
-	    $response .= "\n\nOur connection is ok!\n";
+	    //$response .= "\n\nOur connection is ok!\n";
 	} else {
 	    $response .= "Error: \n".mysqli_error($link);
 	}
@@ -173,7 +199,8 @@ else
 	switch($stato_volantinatore)
 	{
 		case "ins_nome":
-			$querry = "INSERT INTO `Contatti` (`N_contatto`, `utente`, `data_ins`, `nom_cogn`, `numerone`, `note_v`, `data_d`, `data_r`, `ora_r`, `note_r`, `integrazione`) VALUES ('$codice_cliente', '$username', '$data_oggi', '$text', NULL, '', NULL, NULL, NULL, '', NULL);";
+			$text = strtolower($text);
+			$querry = "INSERT INTO `Contatti` (`N_contatto`, `utente`, `data_ins`, `nom_cogn`, `numerone`, `note_v`, `data_d`, `data_r`, `ora_r`, `note_r`, `integrazione`, `esito`) VALUES ('$codice_cliente', '$username', '$data_oggi', '$text', NULL, '', NULL, NULL, NULL, '', NULL, '');";
 			$Result = mysqli_query($link,$querry);
 			if( !$Result )
 			{
@@ -291,7 +318,6 @@ else
 			} else {
 				$querry = "SELECT * FROM `Contatti` WHERE `utente` = '$username' AND `data_r` = '$text'";
 			}
-			$response .= "\n".$querry;
 			
 			$Result3 = mysqli_query($link,$querry);
 			if( !$Result3 )
@@ -299,12 +325,74 @@ else
 				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
 			
-			$response .= "\n Persone da richiamare:";
+			$response .= "\nPersone da richiamare:\n";
 			while( $row = mysqli_fetch_array($Result3, MYSQLI_NUM) )
 			{
 				$ora_r = str_replace('.', ':', $row[8]);
 				$response .= "\n$row[3]\ndata demo: $row[6]\ndata richiamo: $row[7]\nora richiamo: $ora_r\n";
 			}
+			
+			$querry3 = "UPDATE `Utenti` SET `stato` = 'elenco_fine' WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$response .= "\nDigita /start per effettuare una nuova azione o /inserisci per inserire un nuovo contatto.";
+			
+			break;
+		case "esito":
+			$text = strtolower($text);
+			$querry = "SELECT * FROM `Contatti` WHERE `utente` = '$username' AND `nom_cogn` = '$text'";
+			
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				//$response .= "\nerrore query (select): ".mysqli_error($link);
+				$response .= "\nquesto utente non sembra esistere, riprova con un altro nome e cognome:";
+			}
+			
+			$row = mysqli_fetch_array($Result3, MYSQLI_NUM)
+			$esito = "";
+			switch($row[11])
+			{
+				case "NF":
+					$esito = "numero falso";
+					break;
+				case "NR":
+					$esito = "nessuna risposta";
+					break;
+				case "NI":
+					$esito = "non interessato";
+					break;
+				case "ND":
+					$esito = "genitore non interessato";
+					break;
+				case "R":
+					$esito = "rimandato app";
+					break;
+				case "C":
+					$esito = "confermato";
+					break;
+				case "P":
+					$esito = "presente demo";
+					break;
+				default:
+					break;
+			}
+			
+			$response .= "\nIl contatto $row[3] ha come esito attuale: $esito. Inserisci il nuovo esito (NF - numero falso, NR - nessuna risposta, NI - non interessato, ND - genitore non interessato, R - rimandato app, C - confermato, P - presente alla demo):";
+
+			
+			$querry3 = "UPDATE `Utenti` SET `stato` = 'elenco_fine' WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$response .= "\nDigita /start per effettuare una nuova azione o /inserisci per inserire un nuovo contatto.";
 			
 			break;
 		default:
