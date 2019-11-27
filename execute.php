@@ -25,7 +25,7 @@ $response = '';
 
 if(strpos($text, "/start") === 0 || $text=="ciao")
 {
-	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, il comando /elenco per vedere chi hai da richiamare, il comando /esito per mettere o modificare l'esito di una contatto, il comando /esito per avere il riassunto dell'andamento del volantinaggio. :)";
+	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, il comando /elenco per vedere chi hai da richiamare, il comando /esito per mettere o modificare l'esito di una contatto, il comando /ore per registrare il numero di ore che hai volantinato, il comando /esito per avere il riassunto dell'andamento del volantinaggio. :)";
 
 	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
@@ -160,6 +160,31 @@ elseif(strpos($text, "/esito") === 0)
 	$data_oggi = date("Y-m-d");
 	$response .= "\nInserisci il nome e cognome del contatto di cui vuoi modificare l'esito:";
 
+	
+	mysqli_close($link);
+}
+elseif(strpos($text, "/ore") === 0)
+{
+	//modifico stato volantinatore in "esito".
+	
+	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
+	if (mysqli_connect_errno()) {
+		$response .= "Connect failed: %s\n".mysqli_connect_error();
+	}
+	if (mysqli_ping($link)) {
+	    //$response .= "\n\nOur connection is ok!\n";
+	} else {
+	    $response .= "Error: \n".mysqli_error($link);
+	}
+	
+	$querry3 = "UPDATE `Utenti` SET `stato` = 'ore' WHERE `Utenti`.`Nome` = '$username'";
+	$Result3 = mysqli_query($link,$querry3);
+	if( !$Result3 )
+	{
+		$response .= "\nerrore query (select): ".mysqli_error($link);
+	}
+
+	$response .= "\nInserisci la data di quando vuoi inserire il numero di ore che hai volantinato (se riguarda la giornata di oggi, scrivi \"oggi\") quindi lasciare uno spazio e inserire il numero di ore in cui hai volantinato nel formato HH,MM (esempio 4,5):";
 	
 	mysqli_close($link);
 }
@@ -426,6 +451,28 @@ else
 			}
 			
 			$response .= "\nEsito contatto modificato correttamente! Digita /start per effettuare una nuova azione o /inserisci per inserire un nuovo contatto.";
+			
+			break;
+		case "ore":
+			$data = "";
+			$ore_vol = "0.0";
+			if(strpos(strtolower($text), "oggi") == true)
+			{
+				$data = date("Y-m-d");
+				$ore_vol = str_replace(',', '.',substr($text, 10));
+			} else {
+				$data = substr($text, 0, 10);
+				$ore_vol = str_replace(',', '.',substr($text, 10));
+			}
+			
+			$querry = "INSERT INTO `Ore_vol` (`Nome_vol`, `data`, `ore`) VALUES ('$username', '$data', '$ore_vol');";
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$response .= "\nOre lavorate inserite correttamente. Digita /start per effettuare una nuova azione o /inserisci per inserire un nuovo contatto.";
 			
 			break;
 		default:
