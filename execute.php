@@ -357,25 +357,25 @@ else
 			$esito = "";
 			switch($row[11])
 			{
-				case "NF":
+				case "nf":
 					$esito = "numero falso";
 					break;
-				case "NR":
+				case "nr":
 					$esito = "nessuna risposta";
 					break;
-				case "NI":
+				case "ni":
 					$esito = "non interessato";
 					break;
-				case "ND":
+				case "nd":
 					$esito = "genitore non interessato";
 					break;
-				case "R":
+				case "r":
 					$esito = "rimandato app";
 					break;
-				case "C":
+				case "c":
 					$esito = "confermato";
 					break;
-				case "P":
+				case "p":
 					$esito = "presente demo";
 					break;
 				default:
