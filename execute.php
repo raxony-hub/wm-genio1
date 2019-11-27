@@ -291,6 +291,7 @@ else
 			} else {
 				$querry = "SELECT * FROM `Contatti` WHERE `utente` = '$username' AND `data_r` = '$text'";
 			}
+			$response .= "\n".$querry;
 			
 			$Result3 = mysqli_query($link,$querry);
 			if( !$Result3 )
