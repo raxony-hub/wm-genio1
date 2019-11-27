@@ -353,7 +353,7 @@ else
 				$response .= "\nquesto utente non sembra esistere, riprova con un altro nome e cognome:";
 			}
 			
-			$row = mysqli_fetch_array($Result3, MYSQLI_NUM)
+			$row = mysqli_fetch_array($Result3, MYSQLI_NUM);
 			$esito = "";
 			switch($row[11])
 			{
@@ -382,17 +382,53 @@ else
 					break;
 			}
 			
+			$codice_cont = $row[0];
+			
 			$response .= "\nIl contatto $row[3] ha come esito attuale: $esito. Inserisci il nuovo esito (NF - numero falso, NR - nessuna risposta, NI - non interessato, ND - genitore non interessato, R - rimandato app, C - confermato, P - presente alla demo):";
 
 			
-			$querry3 = "UPDATE `Utenti` SET `stato` = 'elenco_fine' WHERE `Utenti`.`Nome` = '$username'";
+			$querry3 = "UPDATE `Utenti` SET `N_contatto` = '$codice_cont', `stato` = 'esito_nuovo' WHERE `Utenti`.`Nome` = '$username'";
 			$Result3 = mysqli_query($link,$querry3);
 			if( !$Result3 )
 			{
 				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
 			
-			$response .= "\nDigita /start per effettuare una nuova azione o /inserisci per inserire un nuovo contatto.";
+			$response .= "\nEsito contatto modificato correttamente! Digita /start per effettuare una nuova azione o /inserisci per inserire un nuovo contatto.";
+			
+			break;
+			
+		case "esito_nuovo":
+			//recupero iil codice del contatto da modificare.
+			
+			$querry = "SELECT * FROM `Utenti` WHERE `Nome` = '$username'";
+			
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$row = mysqli_fetch_array($Result3, MYSQLI_NUM);
+			$codice_cont = $row[1];
+			
+			$text = strtolower($text);
+			
+			$querry3 = "UPDATE `Contatti` SET `esito` = '$text' WHERE `Contatti`.`N_contatto` = $codice_cont";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$querry3 = "UPDATE `Utenti` SET `stato` = 'esito_fine' WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$response .= "\nEsito contatto modificato correttamente! Digita /start per effettuare una nuova azione o /inserisci per inserire un nuovo contatto.";
 			
 			break;
 		default:
