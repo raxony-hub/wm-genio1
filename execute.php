@@ -459,10 +459,10 @@ else
 			if(strpos(strtolower($text), "oggi") === 0)
 			{
 				$data = date("Y-m-d");
-				$ore_vol = str_replace(',', '.',substr($text, 4));
+				$ore_vol = str_replace(',', '.',substr($text, 5));
 			} else {
 				$data = substr($text, 0, 10);
-				$ore_vol = str_replace(',', '.',substr($text, 10));
+				$ore_vol = str_replace(',', '.',substr($text, 11));
 			}
 			
 			$querry = "INSERT INTO `Ore_vol` (`Nome_vol`, `data`, `ore`) VALUES ('$username', '$data', '$ore_vol');";
