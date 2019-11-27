@@ -302,7 +302,8 @@ else
 			$response .= "\n Persone da richiamare:";
 			while( $row = mysqli_fetch_array($Result, MYSQLI_NUM) )
 			{
-				$response .= "\n$row[3]\ndata demo:$row[6]\ndata richiamo:$row[7]\nora richiamo:str_replace('.', ':', $row[8])\n";
+				$ora_r = str_replace('.', ':', $row[8]);
+				$response .= "\n$row[3]\ndata demo: $row[6]\ndata richiamo: $row[7]\nora richiamo: $ora_r\n";
 			}
 			
 			break;
