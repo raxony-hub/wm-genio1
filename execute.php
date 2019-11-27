@@ -25,7 +25,7 @@ $response = '';
 
 if(strpos($text, "/start") === 0 || $text=="ciao")
 {
-	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, il comando /elenco per vedere chi hai da richiamare, il comando /esito per mettere o modificare l'esito di una contatto. :)";
+	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, il comando /elenco per vedere chi hai da richiamare, il comando /esito per mettere o modificare l'esito di una contatto, il comando /esito per avere il riassunto dell'andamento del volantinaggio. :)";
 
 	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
@@ -194,7 +194,6 @@ else
 	$codice_cliente = $row[1];
 	$stato_volantinatore = $row[2];
 	$data_oggi = date("Y-m-d");
-	$response .= "\n codice cliente: ".$codice_cliente." stato vol: ".$stato_volantinatore;
 	
 	switch($stato_volantinatore)
 	{
