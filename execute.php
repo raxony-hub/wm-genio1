@@ -466,6 +466,7 @@ else
 			}
 			
 			$querry = "INSERT INTO `Ore_vol` (`Nome_vol`, `data`, `ore`) VALUES ('$username', '$data', '$ore_vol');";
+			$response .= "\nquerry";
 			$Result3 = mysqli_query($link,$querry);
 			if( !$Result3 )
 			{
