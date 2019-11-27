@@ -456,7 +456,7 @@ else
 		case "ore":
 			$data = "";
 			$ore_vol = "0.0";
-			if(strpos(strtolower($text), "oggi") == true)
+			if(strpos(strtolower($text), "oggi") === 0)
 			{
 				$data = date("Y-m-d");
 				$ore_vol = str_replace(',', '.',substr($text, 4));
