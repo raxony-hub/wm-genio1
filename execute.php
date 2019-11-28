@@ -19,6 +19,12 @@ $text = isset($message['text']) ? $message['text'] : "";
 $text = trim($text);
 $text = strtolower($text);
 
+//se l'username non è stato impostato, uso il nome e cognome del volantinatore come username.
+if($username === "")
+{
+	$username = $firstname." ".$lastname;
+}
+
 header("Content-Type: application/json");
 
 $response = '';
