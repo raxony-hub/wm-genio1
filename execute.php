@@ -68,7 +68,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao")
 }
 elseif(strpos($text, "/inserisci") === 0)
 {
-	$response = "Bello, un nuovo contatto! Ti farò delle domande per registrare i suoi dati. Se non sai cosa rispondere, scrivi 'no'. Dimmi il nome e cognome:";
+	$response = "Bello, un nuovo contatto! Ti farò delle domande per registrare i suoi dati. Se non sai cosa rispondere, scrivi <b>'no'</b>. Dimmi il <b>nome</b> e <b>cognome</b>:";
 
 	//recupero il codice univoco del "cliente" che poi userò per registrarlo
 	
@@ -93,7 +93,7 @@ elseif(strpos($text, "/inserisci") === 0)
 	
 	$row = mysqli_fetch_array($Result1, MYSQLI_NUM);
 	$codice_cliente = $row[1] + 1;
-	$response .= "\n codice cliente =".($row[1] + 1);
+	//$response .= "\n codice cliente =".($row[1] + 1);
 	
 	//Aggiorno il codice_utente nuovo nuovo
 	$querry2 = "UPDATE `Utenti` SET `N_contatto` = '$codice_cliente' WHERE `Utenti`.`Nome` = 'tony'";
@@ -110,7 +110,7 @@ elseif(strpos($text, "/inserisci") === 0)
 		$response .= "\nerrore query (select): ".mysqli_error($link1);
 	}
 		
-	$response .= "\n codice aggiornato correttamente";
+	//$response .= "\n codice aggiornato correttamente";
 	
 	mysqli_close($link1);
 
@@ -614,4 +614,5 @@ else
 
 $parameters = array('chat_id' => $chatId, "text" => $response);
 $parameters["method"] = "sendMessage";
+$parameters["parse_mode"] = "html";
 echo json_encode($parameters);
