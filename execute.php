@@ -137,7 +137,7 @@ elseif(strpos($text, "/elenco") === 0)
 	}
 
 	$data_oggi = date("Y-m-d");
-	$response .= "\ninserisci la data di quendo vuoi l'elenco dei contatti da richiamare nel formato AAAA-MM-GG (Esempio: $data_oggi). Se vuoi i contatti che devi richiamare oggi, scrivi \"oggi\" in minuscolo:";
+	$response .= "\ninserisci la <b>data</b> di quendo vuoi l'elenco dei contatti da richiamare nel formato <b>AAAA-MM-GG</b> (Esempio: $data_oggi). Se vuoi i contatti che devi richiamare oggi, scrivi \"oggi\" in minuscolo:";
 
 	
 	mysqli_close($link);
@@ -164,7 +164,7 @@ elseif(strpos($text, "/esito") === 0)
 	}
 
 	$data_oggi = date("Y-m-d");
-	$response .= "\nInserisci il nome e cognome del contatto di cui vuoi modificare l'esito:";
+	$response .= "\nInserisci il <b>nome</b> e <b>cognome</b> del contatto di cui vuoi modificare l'esito:";
 
 	
 	mysqli_close($link);
@@ -190,7 +190,7 @@ elseif(strpos($text, "/ore") === 0)
 		$response .= "\nerrore query (select): ".mysqli_error($link);
 	}
 
-	$response .= "\nInserisci la data di quando vuoi inserire il numero di ore che hai volantinato (se riguarda la giornata di oggi, scrivi \"oggi\") quindi lasciare uno spazio e inserire il numero di ore in cui hai volantinato nel formato HH,MM (esempio 4,5):";
+	$response .= "\nInserisci la <b>data</b> di quando vuoi inserire il numero di <b>ore</b> che hai volantinato (se riguarda la giornata di oggi, scrivi \"oggi\") quindi <b>lasciare uno spazio</b> e inserire il numero di ore in cui hai volantinato nel formato HH,MM (esempio 4,5):";
 	
 	mysqli_close($link);
 }
@@ -215,7 +215,7 @@ elseif(strpos($text, "/analisi") === 0)
 		$response .= "\nerrore query (select): ".mysqli_error($link);
 	}
 
-	$response .= "\nInserisci le date di inizio e di fine per l\'analisi del tuo andamento nel volantinaggio, mantenendo sempre il formato YYYY-MM-GG (es. 2019-11-10 2019-11-20):";
+	$response .= "\nInserisci le date di <b>inizio</b> e di <b>fine</b> per l\'analisi del tuo andamento nel volantinaggio, mantenendo sempre il formato YYYY-MM-GG (es. 2019-11-10 2019-11-20):";
 	
 	mysqli_close($link);
 }
@@ -269,7 +269,7 @@ else
 				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
 			
-			$response .= "\nnome inserito correttamente! Ora inserisci la data della demo a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: $data_oggi):";
+			$response .= "\nnome inserito correttamente! Ora inserisci la <b>data della demo</b> a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: $data_oggi):";
 			
 			break;
 		case "ins_data_demo":
@@ -292,7 +292,7 @@ else
 				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
 			
-			$response .= "\ndata della demo inserita correttamente! Ora inserisci la data del richiamo a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: $data_oggi):";
+			$response .= "\ndata della demo inserita correttamente! Ora inserisci la <b>data del richiamo</b> a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: $data_oggi):";
 			
 			break;
 		case "ins_data_ric":
@@ -313,7 +313,7 @@ else
 				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
 
-			$response .= "\ndata della demo inserita correttamente! Ora inserisci l'ora del richiamo nel formato HH,MM (Esempio: 15,30):";
+			$response .= "\ndata della demo inserita correttamente! Ora inserisci <b>l'ora del richiamo</b> nel formato HH,MM (Esempio: 15,30):";
 						
 			break;
 		case "ins_ora_ric":
@@ -336,7 +336,7 @@ else
 				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
 
-			$response .= "\norario della demo inserito correttamente! Questo contatto è un'integrazione di un altro contatto? (sì/no)";
+			$response .= "\norario della demo inserito correttamente! Questo contatto è <b>un'integrazione</b> di un altro contatto? (sì/no)";
 						
 			break;
 		case "ins_integr":
@@ -445,7 +445,7 @@ else
 			
 			$codice_cont = $row[0];
 			
-			$response .= "\nIl contatto $row[3] ha come esito attuale: $esito. Inserisci il nuovo esito (NF - numero falso, NR - nessuna risposta, NI - non interessato, ND - genitore non interessato, R - rimandato app, C - confermato, P - presente alla demo, PA - porta acconto, I - iscritto):";
+			$response .= "\nIl contatto $row[3] ha come esito attuale: $esito. Inserisci il <b>nuovo</b> esito (NF - numero falso, NR - nessuna risposta, NI - non interessato, ND - genitore non interessato, R - rimandato app, C - confermato, P - presente alla demo, PA - porta acconto, I - iscritto):";
 
 			
 			$querry3 = "UPDATE `Utenti` SET `N_contatto` = '$codice_cont', `stato` = 'esito_nuovo' WHERE `Utenti`.`Nome` = '$username'";
@@ -554,9 +554,19 @@ else
 			{
 				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
+			
+			$tot_cont = mysqli_num_rows($Result3);
+			
+			//recupero gli altri dati.
+			$querry = "SELECT * FROM `Contatti` WHERE `utente` = '$username' AND (`data_ins` BETWEEN '$data_inizio' AND '$data_fine')";
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
 			while($row = mysqli_fetch_array($Result3, MYSQLI_NUM))
 			{
-				$tot_cont = $tot_cont + 1;
 				switch($row[11])
 				{
 					case "nf":
