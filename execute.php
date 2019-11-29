@@ -31,7 +31,7 @@ $response = '';
 
 if(strpos($text, "/start") === 0 || $text=="ciao")
 {
-	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, il comando /elenco per vedere chi hai da richiamare, il comando /esito per mettere o modificare l'esito di una contatto, il comando /ore per registrare il numero di ore che hai volantinato, il comando /analisi per avere il riassunto dell'andamento del tuo volantinaggio, il comando /analisi_istru per avere il riassunto del volantinaggio di un POT. :)";
+	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, il comando /elenco per vedere chi hai da richiamare, il comando /esito per mettere o modificare l'esito di una contatto, il comando /ore per registrare il numero di ore che hai volantinato, il comando /analisi per avere il riassunto dell'andamento del tuo volantinaggio, il comando /istru per avere il riassunto del volantinaggio di un POT. :)";
 
 	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
@@ -219,7 +219,7 @@ elseif(strpos($text, "/analisi") === 0)
 	
 	mysqli_close($link);
 }
-elseif(strpos($text, "/analisi_istru") === 0)
+elseif(strpos($text, "/istru") === 0)
 {
 	//modifico stato volantinatore in "esito".
 	
