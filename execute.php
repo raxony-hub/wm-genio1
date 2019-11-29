@@ -22,7 +22,7 @@ $text = strtolower($text);
 //se l'username non è stato impostato, uso il nome e cognome del volantinatore come username.
 if($username === "")
 {
-	$username = $firstname." ".$lastname;
+	$username = $firstname."_".$lastname;
 }
 
 header("Content-Type: application/json");
@@ -31,7 +31,7 @@ $response = '';
 
 if(strpos($text, "/start") === 0 || $text=="ciao")
 {
-	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, il comando /elenco per vedere chi hai da richiamare, il comando /esito per mettere o modificare l'esito di una contatto, il comando /ore per registrare il numero di ore che hai volantinato, il comando /analisi per avere il riassunto dell'andamento del volantinaggio. :)";
+	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, il comando /elenco per vedere chi hai da richiamare, il comando /esito per mettere o modificare l'esito di una contatto, il comando /ore per registrare il numero di ore che hai volantinato, il comando /analisi per avere il riassunto dell'andamento del tuo volantinaggio, il comando /analisi-istru per avere il riassunto del volantinaggio di un POT. :)";
 
 	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
@@ -216,6 +216,31 @@ elseif(strpos($text, "/analisi") === 0)
 	}
 
 	$response .= "\nInserisci le date di <b>inizio</b> e di <b>fine</b> per l\'analisi del tuo andamento nel volantinaggio, mantenendo sempre il formato YYYY-MM-GG (es. 2019-11-10 2019-11-20):";
+	
+	mysqli_close($link);
+}
+elseif(strpos($text, "/analisi-istru") === 0)
+{
+	//modifico stato volantinatore in "esito".
+	
+	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
+	if (mysqli_connect_errno()) {
+		$response .= "Connect failed: %s\n".mysqli_connect_error();
+	}
+	if (mysqli_ping($link)) {
+	    //$response .= "\n\nOur connection is ok!\n";
+	} else {
+	    $response .= "Error: \n".mysqli_error($link);
+	}
+	
+	$querry3 = "UPDATE `Utenti` SET `stato` = 'analisi-istru' WHERE `Utenti`.`Nome` = '$username'";
+	$Result3 = mysqli_query($link,$querry3);
+	if( !$Result3 )
+	{
+		$response .= "\nerrore query (select): ".mysqli_error($link);
+	}
+
+	$response .= "\nInserisci il <b>nome</b> del POT (così come compare su telegram, quindi spazio e le date di <b>inizio</b> e di <b>fine</b> per l\'analisi del tuo andamento nel volantinaggio, mantenendo sempre il formato YYYY-MM-GG (es. $username 2019-11-10 2019-11-20):";
 	
 	mysqli_close($link);
 }
@@ -604,6 +629,104 @@ else
 			$response .= "\nEccoti i tuoi dati per il periodo che va dal $data_inizio al $data_fine:\n- ore volantinate: ".str_replace('.', ',',$ore_volant_tot)."\n- totale volantinati: $tot_cont\n- contatti/ore: ".(floatval($tot_cont) / floatval($ore_volant_to))."\n- tot. n. falso: $tot_nf\n- tot. nr: $tot_nr\n- tot. ni: $tot_ni\n- tot. nd: $tot_nd\n- tot. rimand.: $tot_r\n- tot. conferme demo: $tot_c\n- tot. prese. demo: $tot_p\n- tot. porta acc.: $tot_pa\n- tot. iscritti: $tot_i\n\n";
 			
 			$querry3 = "UPDATE `Utenti` SET `stato` = 'analisi_fine' WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$response .= "\nDigita /start per effettuare una nuova azione o /inserisci per inserire un nuovo contatto.";
+			
+			break;
+		case "analisi-istru":
+			
+			//trovo il primo spazio per distinguere l'username dalle date.
+			$username_pot = strstr($text, " ", true);
+			$date_da_lav = strstr($text, " ")
+			
+			$data_inizio = substr($date_da_lav, 1,10);
+			$data_fine = substr($date_da_lav, 12);
+			$ore_volant_tot = 0;
+			$tot_cont = 0;
+			$tot_nf = 0;
+			$tot_nr = 0;
+			$tot_ni = 0;
+			$tot_nd = 0;
+			$tot_r = 0;
+			$tot_c = 0;
+			$tot_p = 0;
+			$tot_i = 0;
+			$tot_pa = 0;
+			
+			//recupero le ore.
+			$querry = "SELECT * FROM `Ore_vol` WHERE `Nome_vol` = '$username_pot' AND (`data` BETWEEN '$data_inizio' AND '$data_fine')";
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			while($row = mysqli_fetch_array($Result3, MYSQLI_NUM))
+			{
+				$ore_volant_tot = $ore_volant_tot + $row[2];
+			}
+			
+			//recupero gli altri dati.
+			$querry = "SELECT * FROM `Contatti` WHERE `utente` = '$username_pot' AND (`data_ins` BETWEEN '$data_inizio' AND '$data_fine') AND `integrazione` = 0";
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$tot_cont = mysqli_num_rows($Result3);
+			
+			//recupero gli altri dati.
+			$querry = "SELECT * FROM `Contatti` WHERE `utente` = '$username_pot' AND (`data_ins` BETWEEN '$data_inizio' AND '$data_fine')";
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			while($row = mysqli_fetch_array($Result3, MYSQLI_NUM))
+			{
+				switch($row[11])
+				{
+					case "nf":
+						$tot_nf = $tot_nf + 1;
+						break;
+					case "nr":
+						$tot_nr = $tot_nr + 1;
+						break;
+					case "ni":
+						$tot_ni = $tot_ni + 1;
+						break;
+					case "nd":
+						$tot_nd = $tot_nd + 1;
+						break;
+					case "r":
+						$tot_r = $tot_r + 1;
+						break;
+					case "c":
+						$tot_c = $tot_c + 1;
+						break;
+					case "p":
+						$tot_p = $tot_p + 1;
+						break;
+					case "pa":
+						$tot_pa = $tot_pa + 1;
+						break;
+					case "i":
+						$tot_i = $tot_i + 1;
+						break;
+					default:
+						break;
+				}
+			}
+			
+			$response .= "\nEccoti i tuoi dati per il periodo che va dal $data_inizio al $data_fine:\n- ore volantinate: ".str_replace('.', ',',$ore_volant_tot)."\n- totale volantinati: $tot_cont\n- contatti/ore: ".(floatval($tot_cont) / floatval($ore_volant_to))."\n- tot. n. falso: $tot_nf\n- tot. nr: $tot_nr\n- tot. ni: $tot_ni\n- tot. nd: $tot_nd\n- tot. rimand.: $tot_r\n- tot. conferme demo: $tot_c\n- tot. prese. demo: $tot_p\n- tot. porta acc.: $tot_pa\n- tot. iscritti: $tot_i\n\n";
+			
+			$querry3 = "UPDATE `Utenti` SET `stato` = 'analisi_istru_fine' WHERE `Utenti`.`Nome` = '$username'";
 			$Result3 = mysqli_query($link,$querry3);
 			if( !$Result3 )
 			{
