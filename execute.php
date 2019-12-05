@@ -34,7 +34,7 @@ $response = '';
 
 if(strpos($text, "/start") === 0 || $text=="ciao")
 {
-	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, il comando /elenco per vedere chi hai da richiamare, il comando /esito per mettere o modificare l'esito di una contatto, il comando /ore per registrare il numero di ore che hai volantinato, il comando /analisi per avere il riassunto dell'andamento del tuo volantinaggio, il comando /istru per avere il riassunto del volantinaggio di un POT. :)";
+	$response = "Ciao $firstname, benvenuto nel nuovo WM di Beppe (Tony)! Usa il comando /inserisci per inserire un nuovo fantastico contatto, il comando /modifica per modificare i dati di un contatto già inserito, il comando /elenco per vedere chi hai da richiamare, il comando /esito per mettere o modificare l'esito di una contatto, il comando /ore per registrare il numero di ore che hai volantinato, il comando /analisi per avere il riassunto dell'andamento del tuo volantinaggio, il comando /istru per avere il riassunto del volantinaggio di un POT. :)";
 
 	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
 	if (mysqli_connect_errno()) {
@@ -244,6 +244,31 @@ elseif(strpos($text, "/istru") === 0)
 	}
 
 	$response .= "\nInserisci il <b>nome</b> del POT (così come compare su telegram, quindi spazio e le date di <b>inizio</b> e di <b>fine</b> per l\'analisi del tuo andamento nel volantinaggio, mantenendo sempre il formato YYYY-MM-GG (es. $username 2019-11-10 2019-11-20):";
+	
+	mysqli_close($link);
+}
+elseif(strpos($text, "/modifica") === 0)
+{
+	//modifico stato volantinatore in "esito".
+	
+	$link = mysqli_connect("remotemysql.com:3306", "bfFvkAb7fr", "WoC7xGtmgK", "bfFvkAb7fr");
+	if (mysqli_connect_errno()) {
+		$response .= "Connect failed: %s\n".mysqli_connect_error();
+	}
+	if (mysqli_ping($link)) {
+	    //$response .= "\n\nOur connection is ok!\n";
+	} else {
+	    $response .= "Error: \n".mysqli_error($link);
+	}
+	
+	$querry3 = "UPDATE `Utenti` SET `stato` = 'modifica-cont' WHERE `Utenti`.`Nome` = '$username'";
+	$Result3 = mysqli_query($link,$querry3);
+	if( !$Result3 )
+	{
+		$response .= "\nerrore query (select): ".mysqli_error($link);
+	}
+
+	$response .= "\nInserisci il <b>nome</b> e <b>cognome</b> del contatto da modificare:";
 	
 	mysqli_close($link);
 }
@@ -751,6 +776,172 @@ else
 			
 			$response .= "\nDigita /start per effettuare una nuova azione o /inserisci per inserire un nuovo contatto.";
 			
+			break;
+		case "modifica-cont":
+			//Recupero i dati.
+			$querry = "SELECT * FROM `Contatti` WHERE `utente` = '$text'";
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$row = mysqli_fetch_array($Result3, MYSQLI_NUM);
+			
+			//modifico stato volantinatore.
+			$querry3 = "UPDATE `Utenti` SET `N_contatto` = '$row[0]', `stato` = 'modifica-demo' WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$response .= "\nL'attuale data della demo fissata è: $row[6]. Inserisci la nuova data nel formato AAAA-MM-GG (se non vuoi modificare questo dato, scrivi <b>no</b>):";
+			
+			break;
+		case "modifica-demo":
+			//modifico stato volantinatore.
+			$querry3 = "UPDATE `Utenti` SET `stato` = 'modifica-ric' WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			//Recupero i dati.
+			$querry = "SELECT * FROM `Utenti` WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$row = mysqli_fetch_array($Result3, MYSQLI_NUM);
+			
+			$querry = "SELECT * FROM `Contatti` WHERE `N_contatto` = '$row[1]'";
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$row = mysqli_fetch_array($Result3, MYSQLI_NUM);
+			
+			// inserisco i dati.
+			if( $text === "no" ){
+				$response .= "\ndata della demo non modificata!";
+			} else {
+			
+				$text = str_replace(',', '.', $text);
+
+				$querry3 = "UPDATE `Contatti` SET `data_d` = '$text' WHERE `Contatti`.`N_contatto` = $row[0]";
+				$Result3 = mysqli_query($link,$querry3);
+				if( !$Result3 )
+				{
+					$response .= "\nerrore query (select): ".mysqli_error($link);
+				}
+
+				$response .= "\nodata della demo modificata correttamente!";
+			}	
+			
+			$response .= "\nL'attuale data della richiamo fissata è: $row[7]. Inserisci la nuova data nel formato AAAA-MM-GG (se non vuoi modificare questo dato, scrivi <b>no</b>):";
+			
+			break;
+		case "modifica-ric":
+			//modifico stato volantinatore.
+			$querry3 = "UPDATE `Utenti` SET `stato` = 'modifica-ora-ric' WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			//Recupero i dati.
+			$querry = "SELECT * FROM `Utenti` WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$row = mysqli_fetch_array($Result3, MYSQLI_NUM);
+			
+			$querry = "SELECT * FROM `Contatti` WHERE `N_contatto` = '$row[1]'";
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$row = mysqli_fetch_array($Result3, MYSQLI_NUM);
+			
+			// inserisco i dati.
+			if( $text === "no" ){
+				$response .= "\ndata della richiamo non modificata!";
+			} else {
+			
+				$text = str_replace(',', '.', $text);
+
+				$querry3 = "UPDATE `Contatti` SET `data_r` = '$text' WHERE `Contatti`.`N_contatto` = $row[0]";
+				$Result3 = mysqli_query($link,$querry3);
+				if( !$Result3 )
+				{
+					$response .= "\nerrore query (select): ".mysqli_error($link);
+				}
+
+				$response .= "\ndata del richiamo modificata correttamente!";
+			}	
+			
+			$response .= "\nL'attuale orario del richiamo è: $row[8]. Inserisci il nuovo orario nel formato HH,MM (se non vuoi modificare questo dato, scrivi <b>no</b>):";
+						
+			break;
+		case "modifica-ora-ric":
+			//modifico stato volantinatore.
+			$querry3 = "UPDATE `Utenti` SET `stato` = 'modifica-cont-fin' WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry3);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			//Recupero i dati.
+			$querry = "SELECT * FROM `Utenti` WHERE `Utenti`.`Nome` = '$username'";
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$row = mysqli_fetch_array($Result3, MYSQLI_NUM);
+			
+			$querry = "SELECT * FROM `Contatti` WHERE `N_contatto` = '$row[1]'";
+			$Result3 = mysqli_query($link,$querry);
+			if( !$Result3 )
+			{
+				$response .= "\nerrore query (select): ".mysqli_error($link);
+			}
+			
+			$row = mysqli_fetch_array($Result3, MYSQLI_NUM);
+			
+			// inserisco i dati.
+			if( $text === "no" ){
+				$response .= "\norario del richiamo non modificato!";
+			} else {
+			
+				$text = str_replace(',', '.', $text);
+
+				$querry3 = "UPDATE `Contatti` SET `ora_r` = '$text' WHERE `Contatti`.`N_contatto` = $row[0]";
+				$Result3 = mysqli_query($link,$querry3);
+				if( !$Result3 )
+				{
+					$response .= "\nerrore query (select): ".mysqli_error($link);
+				}
+
+				$response .= "\norario del richiamo modificato correttamente!";
+			}	
+			
+			$response .="\nModifica del contatto completata correttamente.";
+					
 			break;
 		default:
 			$response .= "\n\nstato utente sconosciuto";
