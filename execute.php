@@ -309,19 +309,23 @@ else
 				$response .= "\nerrore query (select): ".mysqli_error($link);
 			}
 
-			$response .= "\n codice aggiornato correttamente";
+			//$response .= "\n codice aggiornato correttamente";
 			
-			// inserisco i dati.
+			// inserisco i dati se a risoosta non è no
+			if( $text === "no"){
+				$response .= "\ndata della demo saltata! Ora inserisci la <b>data del richiamo</b> a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: $data_oggi):";
+
+			} else {
 			
-			$querry3 = "UPDATE `Contatti` SET `data_d` = '$text' WHERE `Contatti`.`N_contatto` = $codice_cliente";
-			$Result3 = mysqli_query($link,$querry3);
-			if( !$Result3 )
-			{
-				$response .= "\nerrore query (select): ".mysqli_error($link);
+				$querry3 = "UPDATE `Contatti` SET `data_d` = '$text' WHERE `Contatti`.`N_contatto` = $codice_cliente";
+				$Result3 = mysqli_query($link,$querry3);
+				if( !$Result3 )
+				{
+					$response .= "\nerrore query (select): ".mysqli_error($link);
+				}
+
+				$response .= "\ndata della demo inserita correttamente! Ora inserisci la <b>data del richiamo</b> a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: $data_oggi):";
 			}
-			
-			$response .= "\ndata della demo inserita correttamente! Ora inserisci la <b>data del richiamo</b> a cui l'hai invitato nel formato AAAA-MM-GG (Esempio: $data_oggi):";
-			
 			break;
 		case "ins_data_ric":
 			//modifico stato volantinatore.
@@ -333,16 +337,20 @@ else
 			}
 			
 			// inserisco i dati.
+			if( $text === "no"){
+				$response .= "\ndata della demo saltata! Ora inserisci <b>l'ora del richiamo</b> nel formato HH,MM (Esempio: 15,30):";
 			
-			$querry3 = "UPDATE `Contatti` SET `data_r` = '$text' WHERE `Contatti`.`N_contatto` = $codice_cliente";
-			$Result3 = mysqli_query($link,$querry3);
-			if( !$Result3 )
-			{
-				$response .= "\nerrore query (select): ".mysqli_error($link);
-			}
+			} else {
+			
+				$querry3 = "UPDATE `Contatti` SET `data_r` = '$text' WHERE `Contatti`.`N_contatto` = $codice_cliente";
+				$Result3 = mysqli_query($link,$querry3);
+				if( !$Result3 )
+				{
+					$response .= "\nerrore query (select): ".mysqli_error($link);
+				}
 
-			$response .= "\ndata della demo inserita correttamente! Ora inserisci <b>l'ora del richiamo</b> nel formato HH,MM (Esempio: 15,30):";
-						
+				$response .= "\ndata della demo inserita correttamente! Ora inserisci <b>l'ora del richiamo</b> nel formato HH,MM (Esempio: 15,30):";
+			}			
 			break;
 		case "ins_ora_ric":
 			//modifico stato volantinatore.
@@ -354,18 +362,22 @@ else
 			}
 			
 			// inserisco i dati.
-			
-			$text = str_replace(',', '.', $text);
-			
-			$querry3 = "UPDATE `Contatti` SET `ora_r` = '$text' WHERE `Contatti`.`N_contatto` = $codice_cliente";
-			$Result3 = mysqli_query($link,$querry3);
-			if( !$Result3 )
-			{
-				$response .= "\nerrore query (select): ".mysqli_error($link);
-			}
+			if( $text === "no" ){
+				$response .= "\norario della demo saltato! Questo contatto è <b>un'integrazione</b> di un altro contatto? (sì/no)";
 
-			$response .= "\norario della demo inserito correttamente! Questo contatto è <b>un'integrazione</b> di un altro contatto? (sì/no)";
-						
+			} else {
+			
+				$text = str_replace(',', '.', $text);
+
+				$querry3 = "UPDATE `Contatti` SET `ora_r` = '$text' WHERE `Contatti`.`N_contatto` = $codice_cliente";
+				$Result3 = mysqli_query($link,$querry3);
+				if( !$Result3 )
+				{
+					$response .= "\nerrore query (select): ".mysqli_error($link);
+				}
+
+				$response .= "\norario della demo inserito correttamente! Questo contatto è <b>un'integrazione</b> di un altro contatto? (sì/no)";
+			}			
 			break;
 		case "ins_integr":
 			//modifico stato volantinatore.
@@ -572,7 +584,7 @@ else
 			}
 			while($row = mysqli_fetch_array($Result3, MYSQLI_NUM))
 			{
-				$ore_volant_tot = $ore_volant_tot + $row[2];
+				$ore_volant_tot = $ore_volant_tot + $row[3];
 			}
 			
 			//recupero gli altri dati.
@@ -670,7 +682,7 @@ else
 			}
 			while($row = mysqli_fetch_array($Result3, MYSQLI_NUM))
 			{
-				$ore_volant_tot = $ore_volant_tot + $row[2];
+				$ore_volant_tot = $ore_volant_tot + $row[3];
 			}
 			
 			//recupero gli altri dati.
