@@ -682,6 +682,9 @@ else
 			
 			//recupero gli altri dati.
 			$querry = "SELECT * FROM `Contatti` WHERE `utente` = '$username_pot' AND (`data_ins` BETWEEN '$data_inizio' AND '$data_fine')";
+			
+			$response .= "\n$querry";
+			
 			$Result3 = mysqli_query($link,$querry);
 			if( !$Result3 )
 			{
@@ -724,7 +727,7 @@ else
 				}
 			}
 			
-			$response .= "\nEccoti i tuoi dati per il periodo che va dal $data_inizio al $data_fine:\n- ore volantinate: ".str_replace('.', ',',$ore_volant_tot)."\n- totale volantinati: $tot_cont\n- contatti/ore: ".(floatval($tot_cont) / floatval($ore_volant_to))."\n- tot. n. falso: $tot_nf\n- tot. nr: $tot_nr\n- tot. ni: $tot_ni\n- tot. nd: $tot_nd\n- tot. rimand.: $tot_r\n- tot. conferme demo: $tot_c\n- tot. prese. demo: $tot_p\n- tot. porta acc.: $tot_pa\n- tot. iscritti: $tot_i\n\n";
+			$response .= "\nEccoti i dati di $username_pot per il periodo che va dal $data_inizio al $data_fine:\n- ore volantinate: ".str_replace('.', ',',$ore_volant_tot)."\n- totale volantinati: $tot_cont\n- contatti/ore: ".(floatval($tot_cont) / floatval($ore_volant_to))."\n- tot. n. falso: $tot_nf\n- tot. nr: $tot_nr\n- tot. ni: $tot_ni\n- tot. nd: $tot_nd\n- tot. rimand.: $tot_r\n- tot. conferme demo: $tot_c\n- tot. prese. demo: $tot_p\n- tot. porta acc.: $tot_pa\n- tot. iscritti: $tot_i\n\n";
 			
 			$querry3 = "UPDATE `Utenti` SET `stato` = 'analisi_istru_fine' WHERE `Utenti`.`Nome` = '$username'";
 			$Result3 = mysqli_query($link,$querry3);
