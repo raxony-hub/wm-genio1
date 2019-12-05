@@ -779,7 +779,7 @@ else
 			break;
 		case "modifica-cont":
 			//Recupero i dati.
-			$querry = "SELECT * FROM `Contatti` WHERE `utente` = '$text'";
+			$querry = "SELECT * FROM `Contatti` WHERE `nom_cogn` = '$text'";
 			$Result3 = mysqli_query($link,$querry);
 			if( !$Result3 )
 			{
