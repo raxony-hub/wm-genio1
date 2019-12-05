@@ -18,6 +18,9 @@ $text = isset($message['text']) ? $message['text'] : "";
 
 $text = trim($text);
 $text = strtolower($text);
+$firstname = strtolower($firstname);
+$lastname = strtolower($lastname);
+$username = strtolower($username);
 
 //se l'username non è stato impostato, uso il nome e cognome del volantinatore come username.
 if($username === "")
