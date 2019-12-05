@@ -686,8 +686,6 @@ else
 			//recupero gli altri dati.
 			$querry = "SELECT * FROM `Contatti` WHERE `utente` = '$username_pot' AND (`data_ins` BETWEEN '$data_inizio' AND '$data_fine')";
 			
-			$response .= "\n$querry";
-			
 			$Result3 = mysqli_query($link,$querry);
 			if( !$Result3 )
 			{
