@@ -791,7 +791,7 @@ else
 			//modifico stato volantinatore.
 			$querry3 = "UPDATE `Utenti` SET `N_contatto` = '$row[0]', `stato` = 'modifica-demo' WHERE `Utenti`.`Nome` = '$username'";
 			
-			$response .="\n$querry3";
+			//$response .="\n$querry3";
 			
 			$Result3 = mysqli_query($link,$querry3);
 			if( !$Result3 )
